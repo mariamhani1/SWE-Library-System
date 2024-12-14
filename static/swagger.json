@@ -1,0 +1,201 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Library System API",
+        "description": "API for managing books in a library system",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/get-books": {
+            "get": {
+                "summary": "Get all books",
+                "responses": {
+                    "200": {
+                        "description": "List of all books",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Book"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search-books": {
+            "get": {
+                "summary": "Search books by filters",
+                "parameters": [
+                    {
+                        "name": "author",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "published_year",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "genre",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of filtered books",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Book"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/add-book": {
+            "post": {
+                "summary": "Add a new book",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Book"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book added successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/update-book/{ISBN}": {
+            "put": {
+                "summary": "Update a book",
+                "parameters": [
+                    {
+                        "name": "ISBN",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BookUpdate"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Book updated successfully"
+                    },
+                    "404": {
+                        "description": "Book not found"
+                    }
+                }
+            }
+        },
+        "/delete-book/{ISBN}": {
+            "delete": {
+                "summary": "Delete a book",
+                "parameters": [
+                    {
+                        "name": "ISBN",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Book deleted successfully"
+                    },
+                    "404": {
+                        "description": "Book not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Book": {
+                "type": "object",
+                "required": ["title", "author", "published_year", "ISBN", "genre"],
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "published_year": {
+                        "type": "string"
+                    },
+                    "ISBN": {
+                        "type": "string"
+                    },
+                    "genre": {
+                        "type": "string"
+                    }
+                }
+            },
+            "BookUpdate": {
+                "type": "object",
+                "properties": {
+                    "title": {
+                        "type": "string"
+                    },
+                    "author": {
+                        "type": "string"
+                    },
+                    "published_year": {
+                        "type": "string"
+                    },
+                    "genre": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
