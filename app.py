@@ -63,7 +63,6 @@ def add_book():
             'error': 'validation failed',
             'missing': missing_fields
         }), 400
-
     try:
         b = {
             'title': book_data['title'],
@@ -76,7 +75,6 @@ def add_book():
         return jsonify(b), 201
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
 @app.route('/update-book/<ISBN>', methods = ['PUT'])
 def update_book(ISBN):
     book_data = request.json
